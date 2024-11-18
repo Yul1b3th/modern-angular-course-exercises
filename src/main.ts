@@ -16,6 +16,4 @@ import { ParentComponent } from './parent/parent.component';
 export class App {
   name = 'Angular';
 }
-bootstrapApplication(App, {
-  providers: [provideExperimentalZonelessChangeDetection()],
-});
+bootstrapApplication(App);

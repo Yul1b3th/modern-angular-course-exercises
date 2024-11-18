@@ -9,7 +9,7 @@ import { ChangeDetectionStrategy, Component, signal } from '@angular/core';
       <button (click)="updateColor()">Update Color</button>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.OnPush,
+  changeDetection: ChangeDetectionStrategy.Default,
   styles: [
     `.signal { padding: 10px; margin: 10px; border: 2px dotted green; }`,
   ],
