@@ -3,14 +3,14 @@ import {
   provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
-import { ParentComponent } from './parent/parent.component';
+import {TaskListComponent} from './signals/task-list.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [ParentComponent],
+  imports: [TaskListComponent],
   template: `
-    <app-parent />
+    <app-task-list />
   `,
 })
 export class App {
