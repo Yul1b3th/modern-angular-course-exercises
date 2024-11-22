@@ -1,33 +1,73 @@
-import { Component, signal, effect, WritableSignal, onTracked, onCleanup } from '@angular/core';
+import { JsonPipe } from '@angular/common';
+import { Component, signal, effect, WritableSignal, untracked } from '@angular/core';
+
+export interface Task {
+  id: string;
+  name: string;
+  completed: boolean;
+};
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
+  imports: [JsonPipe],
   template: `
-    <ul>
-      <li *ngFor="let task of tasks()">{{ task }}</li>
-    </ul>
-    <button (click)="addTask('Nueva Tarea')">Agregar Tarea</button>
+  <button (click)="addTask()">Agregar Tarea</button>
+  <ul>
+    @for(task of tasks(); track task.id){
+      <pre><li>{{ task | json }}</li></pre>
+    }
+  </ul>
   `
 })
 export class TaskListComponent {
-  // Signal de tareas con función de igualdad personalizada
-  // tasks: WritableSignal<string[]> = signal([], (a, b) => JSON.stringify(a) === JSON.stringify(b));
-  tasks: WritableSignal<string[]> = signal([]);
-  // Efecto que realiza limpieza al monitorear cambios en la lista
-  taskEffect = effect(() => {
-    const currentTasks = onTracked(() => this.tasks());
-    console.log('Lista de tareas actual:', currentTasks);
+  tasks = signal<Task[]>([], { equal: this._compararArrays });
 
-    // Simulación de un proceso asíncrono que se limpiará
-    const timeout = setTimeout(() => {
-      console.log('Tarea ejecutada después de 2 segundos');
-    }, 2000);
-
-    onCleanup(() => clearTimeout(timeout));
-  });
-
-  addTask(task: string) {
-    this.tasks.update(tasks => [...tasks, task]);
+  constructor() {
+    effect((onCleanUp)=> {
+      // const currenTasks = untracked( ()=> this.tasks());
+      console.log('Tareas', this.tasks());
+      
+      const timeout = setTimeout(()=> {
+        console.log('Tarea despues de 2 segundos')
+      }, 2000)
+      onCleanUp(()=> clearTimeout(timeout));
+    })
   }
+
+  addTask(): void {
+    const task = this.generateTask();
+    this.tasks.update((tasks:Task[]) => [...tasks, task]);
+  }
+
+  generateTask(): Task { 
+    const newId = this._generateRandomId();
+    return {
+      id: newId,
+      name : `New task ${newId}`,
+      completed : false,
+    }
+  }
+
+  
+  private _generateRandomId(): string {
+    const randomPart = Math.random().toString(36).slice(2, 11);
+    const timestamp = Date.now().toString();
+    return `id-${randomPart}-${timestamp}`;
+  }
+  
+  
+
+  private _compararArrays<T>(arr1: T[], arr2: T[]): boolean {
+    if (!arr1 || !arr2) {
+      return arr1 === arr2; 
+    }
+  
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+  
+    return arr1.every((valor, índice) => valor === arr2[índice]);
+  }
+  
 }
