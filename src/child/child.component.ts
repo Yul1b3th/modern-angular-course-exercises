@@ -14,7 +14,7 @@ import { GrandchildComponent } from '../grandchild/grandchild.component';
     </div>
   `,
   styles: [`.child { padding: 10px; margin: 10px; border: 2px dashed blue; }`],
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class ChildComponent {
   color = this.getRandomColor();
@@ -22,8 +22,8 @@ export class ChildComponent {
   counter = 0;
 
   constructor() {
-    // Mark component to Dirty 2
-    // setInterval(() => this.counter++, 1000);
+    // Mark component to Dirty 
+    setInterval(() => this.counter++, 1000);
   }
 
   ngDoCheck(): void {

@@ -23,7 +23,7 @@ export class ParentComponent {
 
   constructor() {
     // Mark component to Dirty 1
-    setInterval(() => this.counter++, 1000);
+    // setInterval(() => this.counter++, 1000);
   }
 
   triggerChangeDetection() {

@@ -1,6 +1,5 @@
 import {
   Component,
-  provideExperimentalZonelessChangeDetection,
 } from '@angular/core';
 import { bootstrapApplication } from '@angular/platform-browser';
 import { ParentComponent } from './parent/parent.component';

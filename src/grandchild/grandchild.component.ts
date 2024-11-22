@@ -10,7 +10,7 @@ import { ChangeDetectionStrategy, Component } from '@angular/core';
       <button (click)="updateColor()">Update Color</button>
     </div>
   `,
-  changeDetection: ChangeDetectionStrategy.Default,
+  changeDetection: ChangeDetectionStrategy.OnPush,
   styles: [
     `.grandchild { padding: 10px; margin: 10px; border: 2px dotted green; }`,
   ],
@@ -21,7 +21,7 @@ export class GrandchildComponent {
   counter = 0;
 
   constructor() {
-    // Mark component to Dirty 3
+    // Mark component to Dirty 2
     // setInterval(() => this.counter++, 1000);
   }
 
